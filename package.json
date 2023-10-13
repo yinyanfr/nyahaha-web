@@ -19,14 +19,18 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "ahooks": "^3.7.8",
     "antd": "^5.10.0",
+    "crypto-js": "^4.1.1",
     "dayjs": "^1.11.10",
     "firebase": "^10.5.0",
+    "parse-url": "^8.1.0",
     "react-firebase-hooks": "^5.1.1",
     "short-uuid": "^4.2.2",
     "umi": "^4.0.86"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.2",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^6.4.0",

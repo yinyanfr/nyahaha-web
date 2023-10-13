@@ -21,5 +21,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/triple-slash-reference': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 };
