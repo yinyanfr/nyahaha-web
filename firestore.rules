@@ -5,5 +5,14 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+    
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if request.resource.data.role == "user";
+    }
+    
+    match /userdata/{userId} {
+      allow read: if true;
+    }
   }
 }
