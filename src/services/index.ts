@@ -1,15 +1,14 @@
+import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import {
-  addDoc,
+  type DocumentSnapshot,
   collection,
   doc,
   getDoc,
-  getDocs,
   getFirestore,
-  query,
-  where,
+  onSnapshot,
 } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCCbBys8EmimnAg-Wzjhiszlf7UuUxGfok',
@@ -25,33 +24,37 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+const API_HOST =
+  process.env.NODE_ENV === 'production'
+    ? 'https://bot-server.yinyan.fr'
+    : 'http://localhost:20239';
+
+const request = axios.create({ baseURL: API_HOST });
+
 export async function login(loginQuery?: LoginQuery) {
   if (!loginQuery) {
     throw new Error('Invalid login query.');
   }
-  const { id, auth_date, hash } = loginQuery;
-  const userQuery = query(collection(db, 'users'), where('uid', '==', id));
-  const userSnapshot = await getDocs(userQuery);
-  if (userSnapshot.empty) {
-    const userRef = await addDoc(collection(db, 'users'), {
-      uid: id,
-      auth_date,
-      hash,
-      role: 'user',
-    });
-    return {
-      id: userRef.id,
-      uid: id,
-      auth_date,
-      hash,
-      role: 'user',
-    };
-  } else {
-    const userDataList: User[] = [];
-    userSnapshot.forEach(e => {
-      userDataList.push({ ...(e.data() as User), id: e.id });
-    });
-    return userDataList[0];
+  const res = await request.post('/auth/login', loginQuery);
+  const user = res.data;
+  if (user) {
+    localStorage.setItem('token', loginQuery.hash);
+    return user;
+  }
+}
+
+export async function verifyToken(token?: string | null) {
+  if (!token) {
+    throw new Error('No token.');
+  }
+  const res = await request.get('/auth/me', {
+    headers: {
+      Authorization: token,
+    },
+  });
+  const user = res.data;
+  if (user) {
+    return user;
   }
 }
 
@@ -65,4 +68,20 @@ export async function get<T>(collectionName?: string, id?: string) {
     return docSnap.data() as T;
   }
   return null;
+}
+
+export function registerDocListener(
+  collectionName: string,
+  id: string,
+  callback: (snapshot: DocumentSnapshot) => void,
+) {
+  return onSnapshot(doc(db, collectionName, id), callback);
+}
+
+export async function getFileUrls(refs: string[]) {
+  const worker = refs.map(e => getDownloadURL(ref(storage, e)));
+  const req = await Promise.allSettled(worker);
+  return req
+    .filter(e => e.status === 'fulfilled')
+    .map(e => (e as PromiseFulfilledResult<string>).value);
 }
