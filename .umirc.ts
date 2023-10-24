@@ -4,7 +4,6 @@ export default defineConfig({
   routes: [
     { path: '/', component: 'index' },
     { path: '/user', component: 'user' },
-    { path: '/login', component: 'login' },
   ],
   npmClient: 'yarn',
   title: '喵哈哈',
@@ -14,10 +13,10 @@ export default defineConfig({
     '@umijs/plugins/dist/model',
   ],
   antd: {},
-  https: {
-    cert: '../cert/localhost.pem',
-    key: '../cert/localhost-key.pem',
-  },
+  // https: {
+  //   cert: '../cert/localhost.pem',
+  //   key: '../cert/localhost-key.pem',
+  // },
   initialState: {},
   model: {},
 });

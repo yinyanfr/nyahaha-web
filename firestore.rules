@@ -8,11 +8,26 @@ service cloud.firestore {
     
     match /users/{userId} {
       allow read: if true;
-      allow create: if request.resource.data.role == "user";
     }
     
     match /userdata/{userId} {
       allow read: if true;
+    }
+
+    match /gacha/{userId} {
+      allow read: if true;
+    }
+
+    match /songs/{userId} {
+      allow read, write: if isAdmin();
+    }
+
+    function isUser() {
+      return request.auth.uid != null;
+    }
+
+    function isAdmin() {
+      return isUser() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
     }
   }
 }

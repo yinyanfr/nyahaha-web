@@ -21,6 +21,7 @@
     "@ant-design/icons": "^5.2.6",
     "ahooks": "^3.7.8",
     "antd": "^5.10.0",
+    "axios": "^1.5.1",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.10",
     "firebase": "^10.5.0",
