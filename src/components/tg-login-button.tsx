@@ -15,7 +15,7 @@ export default function TGLoginButton() {
     tgLoginButtonScript.src = 'https://telegram.org/js/telegram-widget.js?22';
     tgLoginButtonScript.setAttribute('data-telegram-login', 'nyahaha_bot');
     tgLoginButtonScript.setAttribute('data-size', 'large');
-    tgLoginButtonScript.setAttribute('data-auth-url', '/user');
+    tgLoginButtonScript.setAttribute('data-auth-url', '/login');
     tgLoginButtonScript.setAttribute('data-request-access', 'write');
 
     tgLoginWrapperRef?.current?.appendChild(tgLoginButtonScript);
