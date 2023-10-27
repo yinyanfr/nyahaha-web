@@ -4,6 +4,8 @@ export default defineConfig({
   routes: [
     { path: '/', component: 'index' },
     { path: '/user', component: 'user' },
+    { path: '/login', component: 'login' },
+    { path: '/songs', component: 'songs' },
   ],
   npmClient: 'yarn',
   title: '喵哈哈',
