@@ -4,6 +4,7 @@ interface User {
   hash: string;
   id?: string;
   role: string;
+  first_name: string;
 }
 
 interface LoginQuery {
@@ -14,4 +15,12 @@ interface LoginQuery {
 
 interface UserData {
   balance: number;
+}
+
+interface CGSSCard {
+  title: string;
+  name_only: string;
+  rarity: {
+    rarity: number;
+  };
 }

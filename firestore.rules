@@ -18,6 +18,10 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    match /cgss-cards/{document=**} {
+      allow read: if true;
+    }
+
     match /songs/{userId} {
       allow read, write: if isAdmin();
     }

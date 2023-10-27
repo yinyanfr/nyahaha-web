@@ -24,10 +24,12 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-const API_HOST =
-  process.env.NODE_ENV === 'production'
-    ? 'https://bot-server.yinyan.fr'
-    : 'http://localhost:20239';
+// const API_HOST =
+//   process.env.NODE_ENV === 'production'
+//     ? 'https://bot-server.yinyan.fr'
+//     : 'http://localhost:20239';
+
+const API_HOST = 'https://bot-server.yinyan.fr';
 
 const request = axios.create({ baseURL: API_HOST });
 
@@ -36,14 +38,16 @@ export async function login(loginQuery?: LoginQuery) {
     throw new Error('Invalid login query.');
   }
   const res = await request.post('/auth/login', loginQuery);
-  const user = res.data;
+  const user = res.data as User;
   if (user) {
     localStorage.setItem('token', loginQuery.hash);
     return user;
   }
 }
 
-export async function verifyToken(token?: string | null) {
+export async function verifyToken(
+  token?: string | null,
+): Promise<User | undefined> {
   if (!token) {
     throw new Error('No token.');
   }
@@ -52,7 +56,7 @@ export async function verifyToken(token?: string | null) {
       Authorization: token,
     },
   });
-  const user = res.data;
+  const user = res.data as User;
   if (user) {
     return user;
   }
@@ -66,6 +70,26 @@ export async function get<T>(collectionName?: string, id?: string) {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data() as T;
+  }
+  return null;
+}
+
+export async function getAndCache<T>(collectionName?: string, id?: string) {
+  if (!collectionName || !id) {
+    throw new Error('Invalid Request.');
+  }
+  const cacheKey = `get-${collectionName}-${id}`;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    return JSON.parse(cached) as T;
+  }
+
+  const docRef = doc(db, collectionName, id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data: T = docSnap.data() as T;
+    localStorage.setItem(cacheKey, JSON.stringify(data));
+    return data;
   }
   return null;
 }
