@@ -24,3 +24,13 @@ interface CGSSCard {
     rarity: number;
   };
 }
+
+interface Song {
+  id: string;
+  title: string;
+  youtubeId: string;
+  tags: string[];
+  updatedAt?: {
+    toDate: () => Date;
+  };
+}

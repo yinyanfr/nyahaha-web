@@ -22,7 +22,8 @@ service cloud.firestore {
       allow read: if true;
     }
 
-    match /songs/{userId} {
+    match /songs/{document=**} {
+      allow read: if true;
       allow read, write: if isAdmin();
     }
 

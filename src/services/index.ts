@@ -1,12 +1,22 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import {
+  browserLocalPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import {
   type DocumentSnapshot,
   collection,
   doc,
   getDoc,
   getFirestore,
   onSnapshot,
+  type QuerySnapshot,
+  addDoc,
+  updateDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
@@ -21,15 +31,22 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// const API_HOST =
-//   process.env.NODE_ENV === 'production'
-//     ? 'https://bot-server.yinyan.fr'
-//     : 'http://localhost:20239';
+export async function adminLogin(email: string, password: string) {
+  await setPersistence(auth, browserLocalPersistence);
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  return result?.user;
+}
 
-const API_HOST = 'https://bot-server.yinyan.fr';
+const API_HOST =
+  process.env.NODE_ENV === 'production'
+    ? 'https://bot-server.yinyan.fr'
+    : 'http://localhost:20239';
+
+// const API_HOST = 'https://bot-server.yinyan.fr';
 
 const request = axios.create({ baseURL: API_HOST });
 
@@ -100,6 +117,28 @@ export function registerDocListener(
   callback: (snapshot: DocumentSnapshot) => void,
 ) {
   return onSnapshot(doc(db, collectionName, id), callback);
+}
+
+export function registerCollectionListener(
+  collectionName: string,
+  callback: (snapshot: QuerySnapshot) => void,
+) {
+  return onSnapshot(collection(db, 'songs'), callback);
+}
+
+export async function create(collectionName: string, payload: any) {
+  const docRef = await addDoc(collection(db, 'songs'), {
+    ...payload,
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function update(collectionName: string, id: string, payload: any) {
+  await updateDoc(doc(db, collectionName, id), {
+    ...payload,
+    updatedAt: serverTimestamp(),
+  });
 }
 
 export async function getFileUrls(refs: string[]) {
