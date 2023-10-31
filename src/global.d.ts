@@ -14,7 +14,10 @@ interface LoginQuery {
 }
 
 interface UserData {
-  balance: number;
+  balance?: number;
+  nickname?: number;
+  timezone?: number;
+  budget?: number;
 }
 
 interface CGSSCard {
@@ -33,4 +36,14 @@ interface Song {
   updatedAt?: {
     toDate: () => Date;
   };
+}
+
+interface Expense {
+  amount: number;
+  category: string;
+  localTime: string;
+}
+
+interface Book {
+  expenses: Expense[];
 }

@@ -34,6 +34,7 @@ export default function SongList() {
       title: 'Youtube ID',
       dataIndex: 'youtubeId',
       key: 'youtubeId',
+      responsive: ['md'],
     },
     {
       title: 'Tags',
@@ -48,6 +49,7 @@ export default function SongList() {
           </Space>
         );
       },
+      responsive: ['lg'],
     },
     {
       title: 'Updated At',
@@ -64,6 +66,7 @@ export default function SongList() {
           dayjs(b.updatedAt?.toDate() ?? '2023-01-01'),
         );
       },
+      // responsive: ['lg'],
     },
     {
       title: 'Options',

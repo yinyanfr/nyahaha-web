@@ -41,12 +41,12 @@ export async function adminLogin(email: string, password: string) {
   return result?.user;
 }
 
-const API_HOST =
-  process.env.NODE_ENV === 'production'
-    ? 'https://bot-server.yinyan.fr'
-    : 'http://localhost:20239';
+// const API_HOST =
+//   process.env.NODE_ENV === 'production'
+//     ? 'https://bot-server.yinyan.fr'
+//     : 'http://localhost:20239';
 
-// const API_HOST = 'https://bot-server.yinyan.fr';
+const API_HOST = 'https://bot-server.yinyan.fr';
 
 const request = axios.create({ baseURL: API_HOST });
 

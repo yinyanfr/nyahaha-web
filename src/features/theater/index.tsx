@@ -28,7 +28,6 @@ const Theater: FC<TheaterProps> = ({ id }) => {
 
   return (
     <section>
-      <Title level={2}>事务所</Title>
       <Title level={3}>SSR: {gacha?.ssr?.length ?? 0}</Title>
       {gacha?.ssr?.length ? <CardsPreview cardIds={gacha.ssr} /> : null}
       <Divider />

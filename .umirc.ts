@@ -6,6 +6,8 @@ export default defineConfig({
     { path: '/user', component: 'user' },
     { path: '/login', component: 'login' },
     { path: '/songs', component: 'songs' },
+    { path: '/theater', component: 'theater' },
+    { path: '/book', component: 'book' },
   ],
   npmClient: 'yarn',
   title: '喵哈哈',
