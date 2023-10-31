@@ -1,6 +1,6 @@
 import { TGLoginButton } from '@/components';
-import { Spin } from 'antd';
-import { Outlet, useModel } from 'umi';
+import { Space, Spin, Typography } from 'antd';
+import { Link, Outlet, useModel } from 'umi';
 
 export default function Layout() {
   const { initialState, loading } = useModel('@@initialState');
@@ -8,10 +8,16 @@ export default function Layout() {
     <div className="page-container">
       <nav className="main-nav">
         <div className="apart">
-          <h2>喵哈哈</h2>
+          <Space>
+            <Link to="/" style={{ color: 'black' }}>
+              喵哈哈
+            </Link>
+            <Link to="/theater">事务所</Link>
+            <Link to="/book">账本</Link>
+          </Space>
           <Spin spinning={loading}>
             {initialState?.user ? (
-              initialState.user.first_name
+              <Link to="/user">{initialState.user.first_name}</Link>
             ) : (
               <TGLoginButton />
             )}

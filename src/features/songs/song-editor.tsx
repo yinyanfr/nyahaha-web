@@ -1,4 +1,4 @@
-import { calculateTagConcurrences, cleanYoutubeLink } from '@/lib';
+import { calculateTagConcurrences, cleanYoutubeLink } from './lib';
 import { create, update } from '@/services';
 import {
   ProForm,

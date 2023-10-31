@@ -1,8 +1,7 @@
 import { TGLoginButton } from '@/components';
-import { Theater } from '@/features';
 import { get } from '@/services';
 import { useRequest } from 'ahooks';
-import { Button, Divider, Result, Spin, Typography } from 'antd';
+import { Button, Result, Spin, Typography } from 'antd';
 import { useModel } from 'umi';
 
 const { Title } = Typography;
@@ -29,6 +28,11 @@ export default function User() {
         <Spin spinning={loading}>
           {userData ? (
             <section>
+              <Title level={3}>昵称：{userData.nickname ?? '大哥哥'}</Title>
+              <Title level={3}>
+                时区：UTC{(userData?.timezone ?? 0) < 0 ? '-' : '+'}
+                {userData.timezone ?? 8}
+              </Title>
               <Title level={3}>石头余额：{userData.balance}</Title>
               <Button type="primary" onClick={refresh}>
                 刷新
@@ -40,10 +44,6 @@ export default function User() {
       ) : (
         <Result title="您尚未登录" extra={<TGLoginButton />} />
       )}
-
-      <Divider />
-
-      {user?.id ? <Theater id={user.id} /> : null}
     </section>
   );
 }

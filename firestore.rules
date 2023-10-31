@@ -27,6 +27,11 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    match /bookkeeping/{document=**} {
+      allow read: if true;
+      allow read, write: if isAdmin();
+    }
+
     function isUser() {
       return request.auth.uid != null;
     }
